@@ -14,7 +14,7 @@ print('Libraries imported')
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### This list of features is the final list of features after cleaning.
-features_list = ['poi', 'salary', 'total_payments', 'bonus', 
+features_list = ['poi', 'salary', 'total_payments', 'bonus',
                 'total_stock_value', 'expenses',
                 'exercised_stock_options','other','restricted_stock',
                 'from_poi_to_this_person','shared_receipt_with_poi',
@@ -36,12 +36,12 @@ df.reset_index(inplace=True)
 df.rename(columns={'index':'full_name'}, inplace=True)
 
 # classifying the columns and modifying dataframe
-continuous_features = ['salary', 'deferral_payments', 'total_payments', 
-                      'loan_advances', 'bonus', 'restricted_stock_deferred', 
-                      'deferred_income', 'total_stock_value', 'expenses', 
+continuous_features = ['salary', 'deferral_payments', 'total_payments',
+                      'loan_advances', 'bonus', 'restricted_stock_deferred',
+                      'deferred_income', 'total_stock_value', 'expenses',
                       'exercised_stock_options', 'other', 'long_term_incentive',
-                      'restricted_stock', 'director_fees', 'to_messages', 
-                       'from_poi_to_this_person', 'from_messages', 
+                      'restricted_stock', 'director_fees', 'to_messages',
+                       'from_poi_to_this_person', 'from_messages',
                        'from_this_person_to_poi', 'shared_receipt_with_poi']
 
 email_features= ['to_messages', 'from_poi_to_this_person', 'from_messages',
@@ -106,11 +106,11 @@ print('Features and labels created')
 ### Note that if you want to do PCA or other multi-stage operations,
 ### you'll need to use Pipelines. For more info:
 ### http://scikit-learn.org/stable/modules/pipeline.html
-### Tune your classifier to achieve better than .3 precision and recall 
+### Tune your classifier to achieve better than .3 precision and recall
 ### using our testing script. Check the tester.py script in the final project
 ### folder for details on the evaluation method, especially the test_classifier
 ### function. Because of the small size of the dataset, the script uses
-### stratified shuffle split cross validation. For more info: 
+### stratified shuffle split cross validation. For more info:
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
 print('Start training')
@@ -119,12 +119,12 @@ print('Start training')
 from sklearn import model_selection
 from sklearn import ensemble
 features_train, features_test, labels_train, labels_test = \
-model_selection.train_test_split(features, labels, test_size=0.3, 
+model_selection.train_test_split(features, labels, test_size=0.3,
                                  random_state=42)
 
 
 params_grid={'n_estimators':[25,50,100,150,200,300]}
-clf = model_selection.GridSearchCV(ensemble.RandomForestClassifier(), 
+clf = model_selection.GridSearchCV(ensemble.RandomForestClassifier(),
                                    params_grid, return_train_score=True)
 clf.fit(features_train, labels_train)
 test_classifier(clf, my_dataset, features_list)
@@ -134,5 +134,5 @@ test_classifier(clf, my_dataset, features_list)
 ### that the version of poi_id.py that you submit can be run on its own and
 ### generates the necessary .pkl files for validating your results.
 
-dump_classifier_and_data(clf, my_dataset, features_list)
+dump_classifier_and_data(clf.best_estimator_, my_dataset, features_list)
 print('Process finalised')
